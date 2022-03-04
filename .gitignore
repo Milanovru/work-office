@@ -1,6 +1,6 @@
 __pycache__
 poetry.lock
-form*.docx
+*.docx
 test.docx
 .venv
 .pytest_cache
