@@ -1,50 +1,89 @@
 <template>
-    <section>
-        <select name="documents" :selected="true" v-model="selected">
-            <option v-for="option in options" :key="option">{{option}}</option>
-        </select>
-        <div class="html-form" v-html="chek_form"></div>
-    </section>
+    <div class="html-form">
+        <table>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <p v-html="header"></p>
+                    <!-- <p>Заместителю начальника отдела – начальнику 2 отделения 13 отдела УИТО Спецсвязи ФСО России<br ><br />полковнику Горжанову А.В.</p> -->
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <p>Рапорт</p>
+                </td>
+            </tr>
+        </table>
+        <p>Прошу предоставить мне 1 день отдыха {{date.day+1}} {{date.month}} {{date.year}} года за счет суммированного времени привлечения к исполнению обязанностей военной службы сверх установленной продолжительности еженедельного служебного времени без выезда из Московского гарнизона.
+        </p>
+        <table>
+            <tr>
+                <td>
+                    <p><input v-model="position" type="text" name="position" id="position" placeholder="Должность"> 2 отделения 13 отдела<br />УИТО Спецсвязи ФСО России<br /><input v-model="rank" type="text" name="rank" id="rank" placeholder="Звание"><br />« {{date.day}} » {{date.month}} {{date.year}} г.</p>
+                </td>
+                <td>
+                    <input v-model="name" type="text" name="name" id="name" placeholder="И.О. Фамилия">
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <p>Согласен</p>
+                    <p>«      » {{date.month}} {{date.year}} г.</p>
+                </td>
+                <td></td>
+                <td>
+                    <p>Заместителю руководителя <br />Службы – начальнику <br />УИТО Спецсвязи ФСО России<br /></p>
+                    <p>генерал-лейтенанту Ермольчику В.Д.</p>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <p>Ходатайствую по существу рапорта {{rank}}а {{name}}</p>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <p v-html="footer[0]"></p><p>«      » {{date.month}} {{date.year}} г.</p>
+                </td>
+                <td>
+                    <p v-html="footer[1]"></p>
+                </td>
+            </tr>
+        </table>
+    </div>
 </template>
 
 <script>
 import { useMainStore } from "../stores/mainStore";
 import { mapState } from 'pinia'
-import axios from 'axios'
-
 
 export default {
+    props: {
+        header: String,
+        footer: Object,
+        date: Object
+    },
     data() {
         return {
-            selected: 'form1.docx',
-            options: '',
-            html_form: null
+            position: null,
+            name: null,
+            rank: null,
         }
     },
     methods: {
-        get_documents_list() {
-            axios.get(
-            'http://localhost:8000/api/v1/files/'
-            ).then(response => {
-                this.options = response.data
-            }).catch(err => {
-                console.log(err);
-            })
-        }, 
+
     },
     computed: {
-        ...mapState(useMainStore, ['renderHtml']),
-        chek_form () {
-            axios.get(
-            `http://localhost:8000/api/v1/files/${this.selected}`
-            ).then(
-                response => this.html_form = response.data
-            ).catch(error => console.error(error));
-            return this.html_form
-        }
-    },
-    created() {
-        this.get_documents_list()
+        
     }
 }
 </script>
@@ -100,13 +139,12 @@ export default {
 
     }
 
-.input-rank,
-.input-name,
-.input-position {
+}
+
+#rank,
+#name,
+#position {
     width: 120px;
 }
-
-}
-
 
 </style>

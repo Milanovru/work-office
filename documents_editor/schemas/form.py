@@ -8,3 +8,6 @@ class OrderForm(BaseModel):
     position: str
     rank: str
     name: str
+
+class DocumentParameters(OrderForm):
+    pass

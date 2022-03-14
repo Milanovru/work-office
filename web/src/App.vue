@@ -1,11 +1,9 @@
 <template>
-    <main>
-      <Document />
-    </main>
+    <Main />
 </template>
 
 <script setup>
-import Document from './components/Document.vue'
+import Main from './components/Main.vue'
 
 </script>
 

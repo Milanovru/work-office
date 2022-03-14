@@ -1,5 +1,4 @@
 from docxtpl import DocxTemplate
-import re
 
 
 def debug_errors(func):
@@ -20,7 +19,7 @@ class DocxRender:
         form = (position='string', rank='string', name='string').
         """
         
-        doc = DocxTemplate('forms/test.docx')
+        doc = DocxTemplate('forms/formtest.docx')
         context = {
             'name': form.name,
             'position': form.position,
@@ -31,34 +30,8 @@ class DocxRender:
         return 'успешно'
     
     @staticmethod
-    def configurate_template(html_template)-> str:
-        index = 0
-        while True:
-            regex = re.search(r'{{\w*}}', html_template[index:])  # ищет паттерн {{ }}
-            if regex:
-                tag_class, tag_placeholder = DocxRender.generate_input_attribute(regex.group(0))
-                pattern = f'<input type="text" class="input-data input-{tag_class}" placeholder={tag_placeholder}>'
-                html_template = html_template.replace(
-                    regex.group(0), pattern)  # заменяет паттерн на тег
-                index += regex.end()  # начало поиска передвигается на место, где произошла замена
-            else:
-                index += 1
-            if index == len(html_template):
-                return html_template
-
-    @classmethod
-    def generate_input_attribute(cls, tag: str) -> tuple:
-        """Принимает строку ввиде объекта шаблонизатора и возвращает класс и плайсхолден для тега.
-
-        Args:
-            tag (str): {{ tag }}
-
-        Returns:
-            tuple: название класса, текст для плейсхолдера
-        """
-        if tag == '{{position}}':
-            return 'position', 'Должность'
-        elif tag == '{{rank}}':
-            return 'rank', 'Звание'
-        elif tag == '{{name}}':
-            return 'name', 'Фамилия_И.О.'
+    @debug_errors
+    def get_params_from_html_template(docx_template)-> str:
+        doc = DocxTemplate(docx_template)
+        parametrs = doc.get_undeclared_template_variables()
+        return parametrs
