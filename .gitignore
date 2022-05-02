@@ -1,6 +1,5 @@
 __pycache__
 poetry.lock
 *.docx
-test.docx
 .venv
 .pytest_cache
